@@ -64,7 +64,7 @@ function App (){
     setFilters({...filters, [name]: value});
   };
 
-  const aggregateData = useMemo(() => aggregate(data), [data, filters]);
+  const aggregateData = useMemo(() => aggregate(), [data, filters]);
 
   return (
     <div className='App'>
