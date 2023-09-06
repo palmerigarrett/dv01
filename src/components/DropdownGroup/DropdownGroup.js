@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './DropdownGroup.module.css';
 
 const DropdownGroup = (props) => {
-  const { dropdownGroup, handleFilterChange } = props;
+  const { dropdownGroup, filters, handleFilterChange } = props;
 
   const getDropdownName = (name) => {
     switch (name) {
@@ -22,13 +22,13 @@ const DropdownGroup = (props) => {
   return (
     <>
     {Object.entries(dropdownGroup).map(([name, dropdown]) => {
-      // console.log({name, dropdown})
       return (
         <select
+          value={filters[name]}
           className={styles.dropdown}
           key={dropdown}
           name={name}
-          onChange={handleFilterChange}
+          onChange={(e) => handleFilterChange(e, false)}
         >
           <option name={name} value='All'>{getDropdownName(name)}</option>
           {[...dropdown].map((item) => {

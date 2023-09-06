@@ -21,7 +21,6 @@ function App (){
     year: new Set(),
   });
 
-  
   const aggregate = (data, getNewDropdowns) => {
     const dropdowns = {
       homeOwnership: new Set(),
@@ -59,7 +58,8 @@ function App (){
     return aggregateData;
   };
 
-  const handleFilterChange = (event) => {
+  const handleFilterChange = (event, reset) => {
+    if (reset) return setFilters(initialFilterState);
     const {name, value} = event.target;
     setFilters({...filters, [name]: value});
   };
@@ -72,8 +72,8 @@ function App (){
         <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
       </section>
       <section className='section dropdownSection'>
-        <DropdownGroup dropdownGroup={dropdownsState} handleFilterChange={handleFilterChange} />
-        <button onClick={() => setFilters(initialFilterState)}>Reset</button>
+        <DropdownGroup dropdownGroup={dropdownsState} filters={filters} handleFilterChange={handleFilterChange} />
+        <button onClick={(e) => handleFilterChange(e, true)}>Reset</button>
       </section>
     </div>
   );
