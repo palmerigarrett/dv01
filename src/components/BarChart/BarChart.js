@@ -3,6 +3,7 @@ import { Bar, BarChart as Chart, Tooltip, XAxis, YAxis } from 'recharts';
 
 const BarChart = (props) => {
   const { data } = props;
+
   return (
     <Chart
       width={700}

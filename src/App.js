@@ -23,7 +23,7 @@ function App (){
     year: new Set(),
   });
 
-  const aggregate = () => useMemo(() => {
+  const aggregate = () => {
     const dropdowns = {
       homeOwnership: new Set(),
       quarter: new Set(),
@@ -53,16 +53,19 @@ function App (){
       }
       return totals;
     }, {});
-    
+
     setDropdownsState(dropdowns);
     return agData;
-  }, [data, filters]);
+  };
 
   const handleFilterChange = (event, reset) => {
     if (reset) return setFilters(initialFilterState);
     const {name, value} = event.target;
     setFilters({...filters, [name]: value});
   };
+
+  const aggregateData = useMemo(() => aggregate(data), [data, filters]);
+
   return (
     <div className='App'>
       <h1>dv01 CHARTS AND GRAPHS</h1>
@@ -70,14 +73,27 @@ function App (){
         <DropdownGroup dropdownGroup={dropdownsState} filters={filters} handleFilterChange={handleFilterChange} />
         <Button onClick={(e) => handleFilterChange(e, true)}>Reset</Button>
       </section>
-      <section className='section'>
-        <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
-      </section>
-      <section className='section'>
-        <BarChart data={Object.entries(aggregate(data)).map(([grade, amount]) => ({grade, amount: amount.toFixed(2)}))} />
-      </section>
+      {Object.keys(aggregateData).length > 0
+        ? (
+          <>
+          <section className='section'>
+            <Table headers={Object.keys(aggregateData)} data={Object.entries(aggregateData)} />
+          </section>
+          <section className='section'>
+            <BarChart data={Object.entries(aggregateData).map(([grade, amount]) => ({grade, amount: amount.toFixed(2)}))} />
+          </section>
+          </>
+        ) : (
+          <section className='section'>
+            <h2>No data found for these filters</h2>
+          </section>
+        )
+
+      }
     </div>
   );
 }
 
 export default App;
+
+// mortgage 2 60 2016
