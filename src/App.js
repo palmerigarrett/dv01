@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import './App.css'
 import useCSV from './request/useCSV';
+import Table from './components/Table/Table';
 
 function App (){
   const data = useCSV();
@@ -67,25 +68,7 @@ function App (){
       <p>HELLO WORLD</p>
       <p>CHARTS AND GRAPHS</p>
       <section>
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(aggregate(data)).map((grade) => {
-                return <th key={grade}>Grade {grade}</th>
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {Object.entries(aggregate(data)).map(([grade, amount]) => {
-                const key = `${grade}-${amount}`
-                return <th key={key}>{amount.toFixed(2)}</th>
-
-              })}
-            </tr>
-          </tbody>
-
-        </table>
+        <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
       </section>
       <section>
         {Object.entries(dropdownsState).map(([name, dropdown]) => {
