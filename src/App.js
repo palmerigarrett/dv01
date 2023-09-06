@@ -3,6 +3,7 @@ import './App.css'
 import useCSV from './request/useCSV';
 import Table from './components/Table/Table';
 import DropdownGroup from './components/DropdownGroup/DropdownGroup';
+import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 
 function App (){
   const data = useCSV();
@@ -21,7 +22,7 @@ function App (){
     year: new Set(),
   });
 
-  const aggregate = (data, getNewDropdowns) => {
+  const aggregate = (data) => {
     const dropdowns = {
       homeOwnership: new Set(),
       quarter: new Set(),
@@ -63,17 +64,28 @@ function App (){
     const {name, value} = event.target;
     setFilters({...filters, [name]: value});
   };
-
   return (
     <div className='App'>
-      <p>HELLO WORLD</p>
-      <p>CHARTS AND GRAPHS</p>
+      <h1>dv01 CHARTS AND GRAPHS</h1>
+      <section className='section'>
+        <DropdownGroup dropdownGroup={dropdownsState} filters={filters} handleFilterChange={handleFilterChange} />
+        <button onClick={(e) => handleFilterChange(e, true)}>Reset</button>
+      </section>
       <section className='section'>
         <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
       </section>
-      <section className='section dropdownSection'>
-        <DropdownGroup dropdownGroup={dropdownsState} filters={filters} handleFilterChange={handleFilterChange} />
-        <button onClick={(e) => handleFilterChange(e, true)}>Reset</button>
+      <section className='section'>
+        <BarChart
+          width={600}
+          height={300}
+          data={Object.entries(aggregate(data)).map(([grade, amount]) => ({grade, amount}))}
+        >
+          <XAxis dataKey='grade' />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey='amount' fill='#8884d8' />
+        </BarChart>
       </section>
     </div>
   );

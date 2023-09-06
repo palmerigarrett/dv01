@@ -105,11 +105,8 @@ table, th, td {
   border-collapse: collapse;
 }
 
-.dropdownSection {
-  margin-top: 5rem;
-}
-
 .section {
+  margin-top: 4rem;
   display: flex;
   justify-content: center;
 }
