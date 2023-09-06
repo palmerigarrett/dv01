@@ -24,15 +24,16 @@ const DropdownGroup = (props) => {
     {Object.entries(dropdownGroup).map(([name, dropdown]) => {
       return (
         <select
+          title={`Change ${getDropdownName(name)} filter`}
           value={filters[name]}
           className={styles.dropdown}
           key={dropdown}
           name={name}
           onChange={(e) => handleFilterChange(e, false)}
         >
-          <option name={name} value='All'>{getDropdownName(name)}</option>
+          <option name={name} title='Include All' value='All'>{getDropdownName(name)}</option>
           {[...dropdown].map((item) => {
-            return <option key={item} value={item}>{item}</option>
+            return <option key={item} title={`filter for ${item}`} value={item}>{item}</option>
           })}
         </select>
       );

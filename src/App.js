@@ -3,7 +3,8 @@ import './App.css'
 import useCSV from './request/useCSV';
 import Table from './components/Table/Table';
 import DropdownGroup from './components/DropdownGroup/DropdownGroup';
-import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import BarChart from './components/BarChart/BarChart';
+import Button from './components/Button/Button';
 
 function App (){
   const data = useCSV();
@@ -69,23 +70,13 @@ function App (){
       <h1>dv01 CHARTS AND GRAPHS</h1>
       <section className='section'>
         <DropdownGroup dropdownGroup={dropdownsState} filters={filters} handleFilterChange={handleFilterChange} />
-        <button onClick={(e) => handleFilterChange(e, true)}>Reset</button>
+        <Button onClick={(e) => handleFilterChange(e, true)}>Reset</Button>
       </section>
       <section className='section'>
         <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
       </section>
       <section className='section'>
-        <BarChart
-          width={600}
-          height={300}
-          data={Object.entries(aggregate(data)).map(([grade, amount]) => ({grade, amount}))}
-        >
-          <XAxis dataKey='grade' />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey='amount' fill='#8884d8' />
-        </BarChart>
+        <BarChart data={Object.entries(aggregate(data)).map(([grade, amount]) => ({grade, amount: amount.toFixed(2)}))} />
       </section>
     </div>
   );
