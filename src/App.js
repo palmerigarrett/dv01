@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import './App.css'
 import useCSV from './request/useCSV';
 import Table from './components/Table/Table';
+import DropdownGroup from './components/DropdownGroup/DropdownGroup';
 
 function App (){
   const data = useCSV();
@@ -67,21 +68,12 @@ function App (){
     <div className='App'>
       <p>HELLO WORLD</p>
       <p>CHARTS AND GRAPHS</p>
-      <section>
+      <section className='section'>
         <Table headers={Object.keys(aggregate(data))} data={Object.entries(aggregate(data))} />
       </section>
-      <section>
-        {Object.entries(dropdownsState).map(([name, dropdown]) => {
-          // console.log({name, dropdown})
-          return (
-            <select key={dropdown} name={name} onChange={handleFilterChange}>
-              <option name={name} value='All'>All</option>
-              {[...dropdown].map((item) => {
-                return <option key={item} value={item}>{item}</option>
-              })}
-            </select>
-          );
-        })}
+      <section className='section dropdownSection'>
+        <DropdownGroup dropdownGroup={dropdownsState} handleFilterChange={handleFilterChange} />
+        <button onClick={() => setFilters(initialFilterState)}>Reset</button>
       </section>
     </div>
   );
