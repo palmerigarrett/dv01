@@ -12,7 +12,7 @@ const BarChart = (props) => {
       <XAxis dataKey='grade' />
       <YAxis />
       <Tooltip />
-      <Bar dataKey='amount' fill='#8884d8' />
+      <Bar dataKey='amount' fill='#8884d8'  />
     </Chart>
   )
 };

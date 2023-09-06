@@ -7,7 +7,7 @@ import { getData } from "./api";
  * 
  * @returns {Array} data
  */
-const useCSV = (props) => {
+const useCSV = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getCsvData = async () => {

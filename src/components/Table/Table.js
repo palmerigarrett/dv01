@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Table.module.css';
+import currency from '../../helpers/currency';
 
 const Table = (props) => {
   const { headers, data } = props;
@@ -17,7 +18,7 @@ const Table = (props) => {
         <tr>
           {data.map(([grade, amount]) => {
             const key = `${grade}-${amount}`
-            return <td className={styles.dataCell} key={key}>{amount.toFixed(2)}</td>
+            return <td className={styles.dataCell} key={key}>{currency(amount.toFixed(2))}</td>
           })}
         </tr>
       </tbody>

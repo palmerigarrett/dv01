@@ -23,42 +23,40 @@ function App (){
     year: new Set(),
   });
 
-  const aggregate = (data) => {
+  const aggregate = () => useMemo(() => {
     const dropdowns = {
       homeOwnership: new Set(),
       quarter: new Set(),
       term: new Set(),
       year: new Set(),
     };
-
-    const aggregateData = useMemo(() => {
-      const agData = data.reduce((totals, item) => {
-        const { grade, currentBalance, homeOwnership, quarter, term, year} = item;
-        
-        // Add to dropdowns with O(1) complexity
-        homeOwnership && dropdowns.homeOwnership.add(homeOwnership);
-        quarter && dropdowns.quarter.add(quarter);
-        term && dropdowns.term.add(term);
-        year && dropdowns.year.add(year);
-
-
-        const homeOwnershipFilter = filters.homeOwnership === 'All' || homeOwnership === filters.homeOwnership;
-        const quarterFilter = filters.quarter === 'All' || quarter === filters.quarter;
-        const termFilter = filters.term === 'All' || term === filters.term;
-        const yearFilter = filters.year === 'All' || year === filters.year;
-
-        if (parseInt(grade)) {
-          if (homeOwnershipFilter && quarterFilter && termFilter && yearFilter) {
-            totals[grade] = (totals[grade] || 0) + parseFloat(currentBalance);
-          }
+  
+    const agData = data.reduce((totals, item) => {
+      const { grade, currentBalance, homeOwnership, quarter, term, year } = item;
+  
+      // Add to dropdowns with O(1) complexity
+      homeOwnership && dropdowns.homeOwnership.add(homeOwnership);
+      quarter && dropdowns.quarter.add(quarter);
+      term && dropdowns.term.add(term);
+      year && dropdowns.year.add(year);
+  
+      // Filter data with O(n) complexity
+      const homeOwnershipFilter = filters.homeOwnership === 'All' || homeOwnership === filters.homeOwnership;
+      const quarterFilter = filters.quarter === 'All' || quarter === filters.quarter;
+      const termFilter = filters.term === 'All' || term === filters.term;
+      const yearFilter = filters.year === 'All' || year === filters.year;
+  
+      if (parseInt(grade)) {
+        if (homeOwnershipFilter && quarterFilter && termFilter && yearFilter) {
+          totals[grade] = (totals[grade] || 0) + parseFloat(currentBalance);
         }
-        return totals;
-      }, {});
-      setDropdownsState(dropdowns);
-      return agData;
-    }, [data, filters]);
-    return aggregateData;
-  };
+      }
+      return totals;
+    }, {});
+    
+    setDropdownsState(dropdowns);
+    return agData;
+  }, [data, filters]);
 
   const handleFilterChange = (event, reset) => {
     if (reset) return setFilters(initialFilterState);
